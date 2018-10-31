@@ -3,9 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-scripts": "2.1.0"
+    "brace": "^0.11.1",
+    "firebase": "^5.5.6",
+    "firebaseui": "^3.4.1",
+    "material-components-web": "^0.41.0",
+    "material-icons": "^0.2.3",
+    "react": "^16.7.0-alpha.0",
+    "react-ace": "^6.2.0",
+    "react-dom": "^16.7.0-alpha.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.0",
+    "rmwc": "^3.0.9",
+    "styled-components": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
