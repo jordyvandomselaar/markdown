@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, {useContext} from 'react';
 import 'material-components-web/dist/material-components-web.min.css';
 import 'material-icons';
 
@@ -7,6 +7,8 @@ import {Drawer, DrawerAppContent, DrawerContent, DrawerHeader, DrawerSubtitle, D
 
 import {List, ListItem} from 'rmwc/List';
 import {Link} from 'react-router-dom';
+import {firebase} from '../firebase';
+import UserContext from '../contexts/UserContext';
 
 
 const Wrapper = styled.div`
@@ -35,6 +37,8 @@ const StyledLink = styled(Link)`
 `;
 
 const Layout = ({children}) => {
+  const user = useContext(UserContext);
+
   return (
     <Wrapper>
       <Drawer dismissible open={true}>
@@ -44,7 +48,9 @@ const Layout = ({children}) => {
         </DrawerHeader>
         <DrawerContent>
           <List>
-            <StyledLink to="/"><ListItem>Document overview</ListItem></StyledLink>
+            {user && <StyledLink to="/"><ListItem>Document overview</ListItem></StyledLink>}
+            {user && <ListItem onClick={() => firebase.auth().signOut()}>Logout</ListItem>}
+            {!user && <StyledLink to="/login"><ListItem>Login</ListItem></StyledLink>}
           </List>
         </DrawerContent>
       </Drawer>
