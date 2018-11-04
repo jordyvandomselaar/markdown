@@ -5,8 +5,8 @@ import {Typography} from 'rmwc/Typography';
 import {TextField} from 'rmwc/TextField';
 import {Button} from 'rmwc/Button';
 
-const store = (data, history, storeDocument) => {
-  const newDocument = storeDocument(data);
+const store = async (data, history, storeDocument) => {
+  const newDocument = await storeDocument(data);
 
   return history.push(`/document/${newDocument.id}`);
 };

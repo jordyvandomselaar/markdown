@@ -1,48 +1,51 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import MarkdownEditor from './MarkdownEditor';
 import {Route, Switch} from 'react-router-dom';
 import NewDocument from './NewDocument';
 import {firestore} from '../../firebase';
 import DocumentOverview from './DocmentOverview';
-
-const getDocumentCollection = () => {
-  return firestore.collection('documents');
-};
-
-const storeDocument = (data, userId) => {
-  const newDocument = getDocumentCollection().doc();
-
-  newDocument.set(data);
-
-  return newDocument;
-};
-
-const findDocument = async id => {
-  const document = await getDocumentCollection().doc(id).get();
-
-  if (document.exists) {
-    return document.data();
-  }
-
-  return {};
-};
-
-const updateDocument = (id, data) => {
-  const document = getDocumentCollection().doc(id);
-
-  document.update(data);
-};
-
-const allDocuments = async () => {
-  const documents = await getDocumentCollection().get();
-
-  return documents.docs.reduce((carrier, document) => ({
-    ...carrier,
-    [document.id]: document.data(),
-  }), {});
-};
+import UserContext from '../../contexts/UserContext';
 
 const Document = ({match}) => {
+  const user = useContext(UserContext);
+
+  const getDocumentCollection = () => {
+    return firestore.collection('documents');
+  };
+
+  const storeDocument = async (data) => {
+    const newDocument = getDocumentCollection().doc();
+
+    await newDocument.set({...data, user: user.uid});
+
+    return newDocument;
+  };
+
+  const findDocument = async id => {
+    const document = await getDocumentCollection().doc(id).get();
+
+    if (document.exists) {
+      return document;
+    }
+
+    return {};
+  };
+
+  const updateDocument = (id, data) => {
+    const document = getDocumentCollection().doc(id);
+
+    return document.update(data);
+  };
+
+  const allDocuments = async () => {
+    const documents = await getDocumentCollection().where('user', '==', user.uid).get();
+
+    return documents.docs.reduce((carrier, document) => ({
+      ...carrier,
+      [document.id]: document.data(),
+    }), {});
+  };
+
   return (
     <Switch>
       <Route

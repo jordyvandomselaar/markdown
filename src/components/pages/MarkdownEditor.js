@@ -13,7 +13,7 @@ const MarkdownEditor = ({match, findDocument, updateDocument}) => {
 
     const document = await findDocument(id);
 
-    setMarkdown(document.markdown || '');
+    setMarkdown(document.data().markdown || '');
 
     setLoading(false);
   }, []);
