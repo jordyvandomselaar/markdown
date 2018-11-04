@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {
   GridList,
   GridTile,
+  GridTileIcon,
   GridTilePrimary,
   GridTilePrimaryContent,
   GridTileSecondary,
@@ -15,7 +16,17 @@ import {Icon} from 'rmwc/Icon';
 
 import {Link} from 'react-router-dom';
 
-const getDocuments = items => {
+
+const StyledIcon = styled(Icon)`
+  font-size: 10rem;
+  text-align: center;
+`;
+
+const StyledGridIcon = styled(GridTileIcon)`
+  right: 16px;
+`;
+
+const getDocuments = (items, deleteDocument) => {
   return (
     Object.keys(items).map(id => {
       const document = items[id];
@@ -32,6 +43,12 @@ const getDocuments = items => {
               <GridTileTitle>
                 {document.name}
               </GridTileTitle>
+              <StyledGridIcon
+                icon="delete" onClick={e => {
+                e.preventDefault();
+                deleteDocument(id);
+              }}
+              />
             </GridTileSecondary>
           </Link>
         </GridTile>
@@ -39,11 +56,6 @@ const getDocuments = items => {
     })
   );
 };
-
-const StyledIcon = styled(Icon)`
-  font-size: 10rem;
-  text-align: center;
-`;
 
 const NewDocumentTile = () => {
   return (
@@ -64,7 +76,7 @@ const NewDocumentTile = () => {
   );
 };
 
-const DocumentOverview = ({fetchDocuments}) => {
+const DocumentOverview = ({fetchDocuments, deleteDocument: deleteFirestoreDocument}) => {
   const [documents, setDocuments] = useState({});
 
   useEffect(async () => {
@@ -73,11 +85,19 @@ const DocumentOverview = ({fetchDocuments}) => {
     setDocuments(documents);
   }, []);
 
+  const deleteDocument = id => {
+    deleteFirestoreDocument(id);
+
+    const newDocuments = documents;
+    delete newDocuments[id];
+    setDocuments(newDocuments);
+  };
+
   return (
     <div>
       <GridList>
         <NewDocumentTile/>
-        {getDocuments(documents)}
+        {getDocuments(documents, deleteDocument)}
       </GridList>
     </div>
   );

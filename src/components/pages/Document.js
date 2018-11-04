@@ -37,6 +37,10 @@ const Document = ({match}) => {
     return document.update(data);
   };
 
+  const deleteDocument = id => {
+    getDocumentCollection().doc(id).delete();
+  };
+
   const allDocuments = async () => {
     const documents = await getDocumentCollection().where('user', '==', user.uid).get();
 
@@ -51,7 +55,7 @@ const Document = ({match}) => {
       <Route
         exact
         path={`${match.url}`}
-        render={props => <DocumentOverview {...props} fetchDocuments={allDocuments}/>}
+        render={props => <DocumentOverview {...props} fetchDocuments={allDocuments} deleteDocument={deleteDocument}/>}
       />
       <Route exact path={`${match.url}/new`} render={props => <NewDocument {...props} storeDocument={storeDocument}/>}/>
       <Route
