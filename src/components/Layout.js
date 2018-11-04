@@ -36,29 +36,31 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const Layout = ({children}) => {
+const Layout = ({children, loading}) => {
   const user = useContext(UserContext);
 
   return (
     <Wrapper>
-      <Drawer dismissible open={true}>
-        <DrawerHeader>
-          <DrawerTitle>Markdown</DrawerTitle>
-          <DrawerSubtitle>A product by Jordy van Domselaar</DrawerSubtitle>
-        </DrawerHeader>
-        <DrawerContent>
-          <List>
-            {user && <StyledLink to="/"><ListItem>Document overview</ListItem></StyledLink>}
-            {user && <ListItem onClick={() => firebase.auth().signOut()}>Logout</ListItem>}
-            {!user && <StyledLink to="/login"><ListItem>Login</ListItem></StyledLink>}
-          </List>
-        </DrawerContent>
-      </Drawer>
-      <DrawerAppContent style={{minHeight: '15rem', height: '100%'}}>
-        <Content>
-          {children}
-        </Content>
-      </DrawerAppContent>
+      {!loading && <>
+        <Drawer dismissible open={true}>
+          <DrawerHeader>
+            <DrawerTitle>Markdown</DrawerTitle>
+            <DrawerSubtitle>A product by Jordy van Domselaar</DrawerSubtitle>
+          </DrawerHeader>
+          <DrawerContent>
+            <List>
+              {user && <StyledLink to="/"><ListItem>Document overview</ListItem></StyledLink>}
+              {user && <ListItem onClick={() => firebase.auth().signOut()}>Logout</ListItem>}
+              {!user && <StyledLink to="/login"><ListItem>Login</ListItem></StyledLink>}
+            </List>
+          </DrawerContent>
+        </Drawer>
+        <DrawerAppContent style={{minHeight: '15rem', height: '100%'}}>
+          <Content>
+            {children}
+          </Content>
+        </DrawerAppContent>
+      </>}
     </Wrapper>
   );
 };

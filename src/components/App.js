@@ -26,7 +26,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <UserContext.Provider value={user}>
-        <Layout>
+        <Layout loading={loading}>
           <Switch>
             {
               !loading &&
