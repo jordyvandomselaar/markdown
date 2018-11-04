@@ -3,16 +3,15 @@ import AceEditor from 'react-ace';
 
 import 'brace/mode/markdown';
 import 'brace/theme/github';
-import {find, update} from '../../Repositories/DocumentRepository';
 
-const MarkdownEditor = ({match}) => {
+const MarkdownEditor = ({match, findDocument, updateDocument}) => {
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(async () => {
     const id = match.params.id;
 
-    const document = await find(id);
+    const document = await findDocument(id);
 
     setMarkdown(document.markdown || '');
 
@@ -24,7 +23,7 @@ const MarkdownEditor = ({match}) => {
       return;
     }
 
-    update(match.params.id, {markdown});
+    updateDocument(match.params.id, {markdown});
   }, [markdown]);
 
   return (

@@ -14,7 +14,6 @@ import {
 import {Icon} from 'rmwc/Icon';
 
 import {Link} from 'react-router-dom';
-import {all} from '../../Repositories/DocumentRepository';
 
 const getDocuments = items => {
   return (
@@ -65,11 +64,11 @@ const NewDocumentTile = () => {
   );
 };
 
-const DocumentOverview = () => {
+const DocumentOverview = ({fetchDocuments}) => {
   const [documents, setDocuments] = useState({});
 
   useEffect(async () => {
-    const documents = await all();
+    const documents = await fetchDocuments();
 
     setDocuments(documents);
   }, []);
