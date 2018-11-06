@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const MarkdownEditor = ({match, findDocument, updateDocument}) => {
+const Editor = ({match, findDocument, updateDocument}) => {
   const [document, setDocument] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -56,4 +56,4 @@ const MarkdownEditor = ({match, findDocument, updateDocument}) => {
   );
 };
 
-export default MarkdownEditor;
+export default Editor;

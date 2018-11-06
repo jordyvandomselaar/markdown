@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import UserContext from '../contexts/UserContext';
 import {firebase} from '../firebase';
 import ProtectedRoute from './ProtectedRoute';
-import ReactGA from 'react-ga';
+import * as ReactGA from 'react-ga';
 
 const App = () => {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);

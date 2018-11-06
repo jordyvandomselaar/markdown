@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import MarkdownLogo from './Markdown-mark.svg.png';
+import MarkdownLogo from '../../assets/Markdown-mark.svg.png';
 import styled from 'styled-components';
 
 import {

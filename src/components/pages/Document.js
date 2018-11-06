@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import MarkdownEditor from './MarkdownEditor';
+import Editor from './Editor';
 import {Route, Switch} from 'react-router-dom';
 import NewDocument from './NewDocument';
 import {firestore} from '../../firebase';
@@ -60,7 +60,7 @@ const Document = ({match}) => {
       <Route exact path={`${match.url}/new`} render={props => <NewDocument {...props} storeDocument={storeDocument}/>}/>
       <Route
         path={`${match.url}/:id`}
-        render={props => <MarkdownEditor {...props} findDocument={findDocument} updateDocument={updateDocument}/>}
+        render={props => <Editor {...props} findDocument={findDocument} updateDocument={updateDocument}/>}
       />
     </Switch>
   );
