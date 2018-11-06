@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import '@rmwc/data-table/data-table.css';
+import styled from 'styled-components';
 
 import {Icon} from 'rmwc/Icon';
 import {Fab} from 'rmwc/Fab';
+import {Typography} from 'rmwc/Typography';
+
 
 import {
   DataTable,
@@ -17,28 +20,14 @@ import {
 import {Link} from 'react-router-dom';
 import LabelEditor from '../LabelEditor';
 
-const getDocuments = (items, deleteDocument) => {
-  return (
-    Object.keys(items).map(id => {
-      const document = items[id];
+const StyledDataTable = styled(DataTable)`
+  width: 100%;
+`;
 
-      return (
-        <DataTableRow key={id}>
-          <DataTableCell><Link to={`/documents/${id}`}>{document.name}</Link></DataTableCell>
-          <DataTableCell><LabelEditor labels={document.labels}/></DataTableCell>
-          <DataTableCell>
-            <Icon
-              icon="delete" onClick={e => {
-              e.preventDefault();
-              deleteDocument(id);
-            }}
-            />
-          </DataTableCell>
-        </DataTableRow>
-      );
-    })
-  );
-};
+const StyledDataTableContent = styled(DataTableContent)`
+  width: 100%;
+`;
+
 
 const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirestoreDocument}) => {
   const [documents, setDocuments] = useState({});
@@ -57,13 +46,35 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
     setDocuments(newDocuments);
   };
 
+  const getDocuments = () => {
+    return (
+      Object.keys(documents).map(id => {
+        const document = documents[id];
+
+        return (
+          <DataTableRow key={id}>
+            <DataTableCell><Link to={`/documents/${id}`}>{document.name}</Link></DataTableCell>
+            <DataTableCell><LabelEditor labels={document.labels}/></DataTableCell>
+            <DataTableCell>
+              <Icon
+                icon="delete" onClick={e => {
+                e.preventDefault();
+                deleteDocument(id);
+              }}
+              />
+            </DataTableCell>
+          </DataTableRow>
+        );
+      })
+    );
+  };
+
   return (
     <div>
-      <div>
-        <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
-      </div>
-      <DataTable>
-        <DataTableContent>
+      <Typography use="headline1">Document Overview</Typography>
+      <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
+      <StyledDataTable>
+        <StyledDataTableContent>
           <DataTableHead>
             <DataTableRow>
               <DataTableHeadCell>Document</DataTableHeadCell>
@@ -72,12 +83,44 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
             </DataTableRow>
           </DataTableHead>
           <DataTableBody>
-            {getDocuments(documents, deleteDocument)}
+            {getDocuments()}
           </DataTableBody>
-        </DataTableContent>
-      </DataTable>
+        </StyledDataTableContent>
+      </StyledDataTable>
     </div>
   );
+
+  // return (
+  //   <div>
+  //     <Grid>
+  //       <GridCell span={12}>
+  //         <Typography use="headline1">Document Overview</Typography>
+  //       </GridCell>
+  //       <GridCell span={12}>
+  //         <Center>
+  //           <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
+  //         </Center>
+  //       </GridCell>
+  //       <GridCell desktop={3} tablet={1} phone={1}/>
+  //       <GridCell desktop={8} phone={4}>
+  //         <DataTable>
+  //           <DataTableContent>
+  //             <DataTableHead>
+  //               <DataTableRow>
+  //                 <DataTableHeadCell>Document</DataTableHeadCell>
+  //                 <DataTableHeadCell>Labels</DataTableHeadCell>
+  //                 <DataTableHeadCell>Actions</DataTableHeadCell>
+  //               </DataTableRow>
+  //             </DataTableHead>
+  //             <DataTableBody>
+  //               {getDocuments()}
+  //             </DataTableBody>
+  //           </DataTableContent>
+  //         </DataTable>
+  //       </GridCell>
+  //     </Grid>
+  //   </div>
+  // );
 };
 
 export default DocumentOverview;
