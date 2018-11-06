@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "markdown-production"
+    "default": "markdown-production",
+    "development": "markdown-c4105"
   }
 }

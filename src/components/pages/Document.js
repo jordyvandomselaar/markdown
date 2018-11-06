@@ -13,10 +13,23 @@ const Document = ({match}) => {
     return firestore.collection('documents');
   };
 
-  const storeDocument = async (data) => {
-    const newDocument = getDocumentCollection().doc();
+  const getLabelsCollection = () => {
+    return firestore.collection('labels');
+  };
 
-    await newDocument.set({...data, user: user.uid});
+  const storeDocument = async (data, labels = []) => {
+    labels.forEach(async name => {
+      try {
+        await getLabelsCollection().where('label', '==', name).where('user', '==', user.uid).get();
+      } catch (e) {
+        // If the label does not exist you get a permission error, create the label anew!
+        const newLabel = getLabelsCollection().doc();
+        await newLabel.set({label: name, user: user.uid, timestamp: Date.now()});
+      }
+    });
+
+    const newDocument = getDocumentCollection().doc();
+    await newDocument.set({...data, user: user.uid, timestamp: Date.now(), labels: labels});
 
     return newDocument;
   };

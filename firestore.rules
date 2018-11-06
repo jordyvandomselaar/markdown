@@ -2,7 +2,11 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /documents/{document} {
     	allow read, write, delete: if request.auth != null && request.auth.uid == resource.data.user
-      allow create: if request.auth != null && request.auth.uid != null
+        allow create: if request.auth != null && request.auth.uid != null
+    }
+    match /labels/{label} {
+    	allow read, write, delete: if request.auth != null && request.auth.uid == resource.data.user
+        allow create: if request.auth != null && request.auth.uid != null
     }
   }
 }

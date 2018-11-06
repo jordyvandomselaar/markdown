@@ -1,30 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import MarkdownLogo from '../../assets/Markdown-mark.svg.png';
-import styled from 'styled-components';
-
-import {
-  GridList,
-  GridTile,
-  GridTileIcon,
-  GridTilePrimary,
-  GridTilePrimaryContent,
-  GridTileSecondary,
-  GridTileTitle,
-} from 'rmwc/GridList';
+import '@rmwc/data-table/data-table.css';
 
 import {Icon} from 'rmwc/Icon';
+import {Fab} from 'rmwc/Fab';
+
+
+import {
+  DataTable,
+  DataTableBody,
+  DataTableCell,
+  DataTableContent,
+  DataTableHead,
+  DataTableHeadCell,
+  DataTableRow,
+} from 'rmwc/DataTable';
 
 import {Link} from 'react-router-dom';
-
-
-const StyledIcon = styled(Icon)`
-  font-size: 10rem;
-  text-align: center;
-`;
-
-const StyledGridIcon = styled(GridTileIcon)`
-  right: 16px;
-`;
+import LabelEditor from '../LabelEditor';
 
 const getDocuments = (items, deleteDocument) => {
   return (
@@ -32,51 +24,24 @@ const getDocuments = (items, deleteDocument) => {
       const document = items[id];
 
       return (
-        <GridTile key={id}>
-          <Link to={`/document/${id}`}>
-            <GridTilePrimary>
-              <GridTilePrimaryContent>
-                <img src={MarkdownLogo} alt="Markdown logo"/>
-              </GridTilePrimaryContent>
-            </GridTilePrimary>
-            <GridTileSecondary>
-              <GridTileTitle>
-                {document.name}
-              </GridTileTitle>
-              <StyledGridIcon
-                icon="delete" onClick={e => {
-                e.preventDefault();
-                deleteDocument(id);
-              }}
-              />
-            </GridTileSecondary>
-          </Link>
-        </GridTile>
+        <DataTableRow key={id}>
+          <DataTableCell><Link to={`/documents/${id}`}>{document.name}</Link></DataTableCell>
+          <DataTableCell><LabelEditor labels={document.labels}/></DataTableCell>
+          <DataTableCell>
+            <Icon
+              icon="delete" onClick={e => {
+              e.preventDefault();
+              deleteDocument(id);
+            }}
+            />
+          </DataTableCell>
+        </DataTableRow>
       );
     })
   );
 };
 
-const NewDocumentTile = () => {
-  return (
-    <GridTile>
-      <Link to={`/document/new`}>
-        <GridTilePrimary>
-          <GridTilePrimaryContent>
-            <StyledIcon icon="add"/>
-          </GridTilePrimaryContent>
-        </GridTilePrimary>
-        <GridTileSecondary>
-          <GridTileTitle>
-            New document
-          </GridTileTitle>
-        </GridTileSecondary>
-      </Link>
-    </GridTile>
-  );
-};
-
-const DocumentOverview = ({fetchDocuments, deleteDocument: deleteFirestoreDocument}) => {
+const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirestoreDocument}) => {
   const [documents, setDocuments] = useState({});
 
   useEffect(async () => {
@@ -93,12 +58,29 @@ const DocumentOverview = ({fetchDocuments, deleteDocument: deleteFirestoreDocume
     setDocuments(newDocuments);
   };
 
+  const NewDocumentButton = () => {
+    return (
+      <Fab icon="add" label="New document" onClick={() => history.push('/documents/new')}/>
+    );
+  };
+
   return (
     <div>
-      <GridList>
-        <NewDocumentTile/>
-        {getDocuments(documents, deleteDocument)}
-      </GridList>
+      <DataTable>
+        <DataTableContent>
+          <DataTableHead>
+            <DataTableRow>
+              <DataTableHeadCell>Document</DataTableHeadCell>
+              <DataTableHeadCell>Labels</DataTableHeadCell>
+              <DataTableHeadCell>Actions</DataTableHeadCell>
+            </DataTableRow>
+          </DataTableHead>
+          <DataTableBody>
+            {getDocuments(documents, deleteDocument)}
+          </DataTableBody>
+        </DataTableContent>
+      </DataTable>
+      <NewDocumentButton/>
     </div>
   );
 };

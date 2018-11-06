@@ -36,9 +36,9 @@ const App = () => {
               !loading &&
               <>
                 <Route exact path="/login" component={Login}/>
-                <Route exact path="/" render={() => <Redirect to="/document"/>}/>
+                <Route exact path="/" render={() => <Redirect to="/documents"/>}/>
                 <ProtectedRoute
-                  path="/document"
+                  path="/documents"
                   component={Document}
                 />
               </>
