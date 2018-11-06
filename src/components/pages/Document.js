@@ -6,7 +6,7 @@ import {firestore} from '../../firebase';
 import DocumentOverview from './DocmentOverview';
 import UserContext from '../../contexts/UserContext';
 
-const Document = ({match}) => {
+const Document = ({match, history}) => {
   const user = useContext(UserContext);
 
   const getDocumentCollection = () => {
@@ -17,7 +17,7 @@ const Document = ({match}) => {
     return firestore.collection('labels');
   };
 
-  const storeDocument = async (data, labels = []) => {
+  const storeDocument = async (name, labels = []) => {
     labels.forEach(async name => {
       try {
         await getLabelsCollection().where('label', '==', name).where('user', '==', user.uid).get();
@@ -29,9 +29,9 @@ const Document = ({match}) => {
     });
 
     const newDocument = getDocumentCollection().doc();
-    await newDocument.set({...data, user: user.uid, timestamp: Date.now(), labels: labels});
+    await newDocument.set({name, user: user.uid, timestamp: Date.now(), labels: labels});
 
-    return newDocument;
+    return history.push(`/documents/${newDocument.id}`);
   };
 
   const findDocument = async id => {
