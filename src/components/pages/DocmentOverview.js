@@ -4,7 +4,6 @@ import '@rmwc/data-table/data-table.css';
 import {Icon} from 'rmwc/Icon';
 import {Fab} from 'rmwc/Fab';
 
-
 import {
   DataTable,
   DataTableBody,
@@ -58,14 +57,11 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
     setDocuments(newDocuments);
   };
 
-  const NewDocumentButton = () => {
-    return (
-      <Fab icon="add" label="New document" onClick={() => history.push('/documents/new')}/>
-    );
-  };
-
   return (
     <div>
+      <div>
+        <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
+      </div>
       <DataTable>
         <DataTableContent>
           <DataTableHead>
@@ -80,7 +76,6 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
           </DataTableBody>
         </DataTableContent>
       </DataTable>
-      <NewDocumentButton/>
     </div>
   );
 };

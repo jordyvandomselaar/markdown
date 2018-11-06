@@ -49,7 +49,7 @@ const Layout = ({children, loading}) => {
           </DrawerHeader>
           <DrawerContent>
             <List>
-              {user && <StyledLink to="/"><ListItem>Document overview</ListItem></StyledLink>}
+              {user && <StyledLink to="/documents"><ListItem>Document overview</ListItem></StyledLink>}
               {user && <ListItem onClick={() => firebase.auth().signOut()}>Logout</ListItem>}
               {!user && <StyledLink to="/login"><ListItem>Login</ListItem></StyledLink>}
             </List>
