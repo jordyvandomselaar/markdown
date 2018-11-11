@@ -5,6 +5,8 @@ import { ToolbarTitle } from "rmwc/Toolbar";
 import "brace/mode/markdown";
 import "brace/theme/github";
 import PageTitle from "../PageTitle";
+import LabelEditor from "../LabelEditor";
+import FlexHorizontal from "../styled/FlexHorizontal";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -41,7 +43,10 @@ const Editor = ({ match, findDocument, updateDocument }) => {
   return (
     <Wrapper>
       <PageTitle>
-        <ToolbarTitle>{document.name}</ToolbarTitle>
+        <FlexHorizontal>
+          <ToolbarTitle>{document.name}</ToolbarTitle>
+          <LabelEditor labels={document.labels} />
+        </FlexHorizontal>
       </PageTitle>
 
       <AceEditor

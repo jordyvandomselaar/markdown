@@ -32,17 +32,15 @@ const App = () => {
       <UserContext.Provider value={user}>
         <Layout loading={loading}>
           <Switch>
-            {!loading && (
-              <>
-                <Route exact path="/login" component={Login} />
-                <Route
-                  exact
-                  path="/"
-                  render={() => <Redirect to="/documents" />}
-                />
-                <ProtectedRoute path="/documents" component={Document} />
-              </>
-            )}
+            <>
+              <Route exact path="/login" component={Login} />
+              <Route
+                exact
+                path="/"
+                render={() => <Redirect to="/documents" />}
+              />
+              <ProtectedRoute path="/documents" component={Document} />
+            </>
           </Switch>
         </Layout>
       </UserContext.Provider>

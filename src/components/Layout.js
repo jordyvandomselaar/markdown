@@ -52,7 +52,6 @@ const StyledLink = styled(Link)`
 const Layout = ({ children, loading }) => {
   const user = useContext(UserContext);
   const [stateTitleBarRef, setStateTitleBarRef] = useState(null);
-  const [titleBarRefHasCurrent, setTitleBarRefHasCurrent] = useState(false);
 
   const titleBarRef = React.createRef();
 
