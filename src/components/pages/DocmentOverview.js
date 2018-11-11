@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "@rmwc/data-table/data-table.css";
 import styled from "styled-components";
-import { Icon } from "rmwc/Icon";
+import { IconButton } from "rmwc/IconButton";
 import { Fab } from "rmwc/Fab";
 import {
   DataTable,
@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import LabelEditor from "../LabelEditor";
 import Centered from "../styled/Centered";
 import PageTitle from "../PageTitle";
-
+import { Grid, GridCell } from "rmwc/Grid";
 import { ToolbarTitle } from "rmwc/Toolbar";
 
 const StyledDataTable = styled(DataTable)`
@@ -25,10 +25,6 @@ const StyledDataTable = styled(DataTable)`
 
 const StyledDataTableContent = styled(DataTableContent)`
   width: 100%;
-`;
-
-const NewDocumentWrapper = styled.div`
-  margin: 20px 0;
 `;
 
 const DocumentOverview = ({
@@ -65,7 +61,7 @@ const DocumentOverview = ({
             <LabelEditor labels={document.labels} />
           </DataTableCell>
           <DataTableCell>
-            <Icon
+            <IconButton
               icon="delete"
               onClick={e => {
                 e.preventDefault();
@@ -83,29 +79,29 @@ const DocumentOverview = ({
       <PageTitle>
         <ToolbarTitle>Document Overview</ToolbarTitle>
       </PageTitle>
-      <div>
-        <Centered>
-          <NewDocumentWrapper>
+      <Grid>
+        <GridCell span={12}>
+          <Centered>
             <Fab
               icon="add"
               label="New Document"
               onClick={() => history.push("/documents/new")}
             />
-          </NewDocumentWrapper>
-        </Centered>
-        <StyledDataTable>
-          <StyledDataTableContent>
-            <DataTableHead>
-              <DataTableRow>
-                <DataTableHeadCell>Document</DataTableHeadCell>
-                <DataTableHeadCell>Labels</DataTableHeadCell>
-                <DataTableHeadCell>Actions</DataTableHeadCell>
-              </DataTableRow>
-            </DataTableHead>
-            <DataTableBody>{getDocuments()}</DataTableBody>
-          </StyledDataTableContent>
-        </StyledDataTable>
-      </div>
+          </Centered>
+          <StyledDataTable>
+            <StyledDataTableContent>
+              <DataTableHead>
+                <DataTableRow>
+                  <DataTableHeadCell>Document</DataTableHeadCell>
+                  <DataTableHeadCell>Labels</DataTableHeadCell>
+                  <DataTableHeadCell>Actions</DataTableHeadCell>
+                </DataTableRow>
+              </DataTableHead>
+              <DataTableBody>{getDocuments()}</DataTableBody>
+            </StyledDataTableContent>
+          </StyledDataTable>
+        </GridCell>
+      </Grid>
     </>
   );
 };

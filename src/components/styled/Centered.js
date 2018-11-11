@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 const Centered = styled.div`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
 `;
 
 export default Centered;
