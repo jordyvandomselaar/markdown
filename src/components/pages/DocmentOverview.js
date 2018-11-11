@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import '@rmwc/data-table/data-table.css';
 import styled from 'styled-components';
-
 import {Icon} from 'rmwc/Icon';
 import {Fab} from 'rmwc/Fab';
-import {Typography} from 'rmwc/Typography';
-
-
 import {
   DataTable,
   DataTableBody,
@@ -16,9 +12,12 @@ import {
   DataTableHeadCell,
   DataTableRow,
 } from 'rmwc/DataTable';
-
 import {Link} from 'react-router-dom';
 import LabelEditor from '../LabelEditor';
+import Centered from '../styled/Centered';
+import PageTitle from '../PageTitle';
+
+import {ToolbarTitle} from 'rmwc/Toolbar';
 
 const StyledDataTable = styled(DataTable)`
   width: 100%;
@@ -28,6 +27,9 @@ const StyledDataTableContent = styled(DataTableContent)`
   width: 100%;
 `;
 
+const NewDocumentWrapper = styled.div`
+  margin: 20px 0;
+`;
 
 const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirestoreDocument}) => {
   const [documents, setDocuments] = useState({});
@@ -70,57 +72,33 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
   };
 
   return (
-    <div>
-      <Typography use="headline1">Document Overview</Typography>
-      <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
-      <StyledDataTable>
-        <StyledDataTableContent>
-          <DataTableHead>
-            <DataTableRow>
-              <DataTableHeadCell>Document</DataTableHeadCell>
-              <DataTableHeadCell>Labels</DataTableHeadCell>
-              <DataTableHeadCell>Actions</DataTableHeadCell>
-            </DataTableRow>
-          </DataTableHead>
-          <DataTableBody>
-            {getDocuments()}
-          </DataTableBody>
-        </StyledDataTableContent>
-      </StyledDataTable>
-    </div>
+    <>
+      <PageTitle>
+        <ToolbarTitle>Document Overview</ToolbarTitle>
+      </PageTitle>
+      <div>
+        <Centered>
+          <NewDocumentWrapper>
+            <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
+          </NewDocumentWrapper>
+        </Centered>
+        <StyledDataTable>
+          <StyledDataTableContent>
+            <DataTableHead>
+              <DataTableRow>
+                <DataTableHeadCell>Document</DataTableHeadCell>
+                <DataTableHeadCell>Labels</DataTableHeadCell>
+                <DataTableHeadCell>Actions</DataTableHeadCell>
+              </DataTableRow>
+            </DataTableHead>
+            <DataTableBody>
+              {getDocuments()}
+            </DataTableBody>
+          </StyledDataTableContent>
+        </StyledDataTable>
+      </div>
+    </>
   );
-
-  // return (
-  //   <div>
-  //     <Grid>
-  //       <GridCell span={12}>
-  //         <Typography use="headline1">Document Overview</Typography>
-  //       </GridCell>
-  //       <GridCell span={12}>
-  //         <Center>
-  //           <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
-  //         </Center>
-  //       </GridCell>
-  //       <GridCell desktop={3} tablet={1} phone={1}/>
-  //       <GridCell desktop={8} phone={4}>
-  //         <DataTable>
-  //           <DataTableContent>
-  //             <DataTableHead>
-  //               <DataTableRow>
-  //                 <DataTableHeadCell>Document</DataTableHeadCell>
-  //                 <DataTableHeadCell>Labels</DataTableHeadCell>
-  //                 <DataTableHeadCell>Actions</DataTableHeadCell>
-  //               </DataTableRow>
-  //             </DataTableHead>
-  //             <DataTableBody>
-  //               {getDocuments()}
-  //             </DataTableBody>
-  //           </DataTableContent>
-  //         </DataTable>
-  //       </GridCell>
-  //     </Grid>
-  //   </div>
-  // );
 };
 
 export default DocumentOverview;

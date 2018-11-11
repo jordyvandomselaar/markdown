@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import AceEditor from 'react-ace';
-import {Typography} from 'rmwc/Typography';
 import styled from 'styled-components';
-
+import {ToolbarTitle} from 'rmwc/Toolbar';
 import 'brace/mode/markdown';
 import 'brace/theme/github';
+import PageTitle from '../PageTitle';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -37,7 +37,9 @@ const Editor = ({match, findDocument, updateDocument}) => {
 
   return (
     <Wrapper>
-      <Typography use="headline1">{document.name}</Typography>
+      <PageTitle>
+        <ToolbarTitle>{document.name}</ToolbarTitle>
+      </PageTitle>
 
       <AceEditor
         mode="markdown"

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import 'material-components-web/dist/material-components-web.min.css';
 import 'material-icons';
 
@@ -9,7 +9,8 @@ import {List, ListItem} from 'rmwc/List';
 import {Link} from 'react-router-dom';
 import {firebase} from '../firebase';
 import UserContext from '../contexts/UserContext';
-
+import TitleBar from './TitleBar';
+import TitleBarContext from '../contexts/TitleBarContext';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -24,12 +25,17 @@ const Wrapper = styled.div`
   
   margin: 0;
   padding: 0;
+  
+  .mdc-typography--headline1 {
+    font-size: 3rem;
+  }
 `;
 
-const Content = styled.div`
+const Content = styled.main`
   height: 100%;
-  width: 100%;
   position: relative;
+  
+  flex: 1;
 `;
 
 const StyledLink = styled(Link)`
@@ -38,11 +44,17 @@ const StyledLink = styled(Link)`
 
 const Layout = ({children, loading}) => {
   const user = useContext(UserContext);
+  const [stateTitleBarRef, setStateTitleBarRef] = useState(null);
+  const titleBarRef = React.createRef();
+
+  useEffect(() => {
+    setStateTitleBarRef(titleBarRef);
+  });
 
   return (
     <Wrapper>
       {!loading && <>
-        <Drawer dismissible open={true}>
+        <Drawer open={true} dismissible={true}>
           <DrawerHeader>
             <DrawerTitle>Markdown</DrawerTitle>
             <DrawerSubtitle>A product by Jordy van Domselaar</DrawerSubtitle>
@@ -56,9 +68,12 @@ const Layout = ({children, loading}) => {
           </DrawerContent>
         </Drawer>
         <DrawerAppContent style={{minHeight: '15rem', height: '100%'}}>
-          <Content>
-            {children}
-          </Content>
+          <TitleBar containerRef={titleBarRef}/>
+          <TitleBarContext.Provider value={stateTitleBarRef}>
+            <Content>
+              {children}
+            </Content>
+          </TitleBarContext.Provider>
         </DrawerAppContent>
       </>}
     </Wrapper>
