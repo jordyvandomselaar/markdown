@@ -38,5 +38,8 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "package-manager": "yarn"
+  "package-manager": "yarn",
+  "devDependencies": {
+    "prettier": "1.15.2"
+  }
 }

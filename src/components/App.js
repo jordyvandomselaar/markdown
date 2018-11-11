@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import Layout from './Layout';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
-import Document from './pages/Document';
-import Login from './pages/Login';
-import UserContext from '../contexts/UserContext';
-import {firebase} from '../firebase';
-import ProtectedRoute from './ProtectedRoute';
-import * as ReactGA from 'react-ga';
+import React, { useEffect, useState } from "react";
+import Layout from "./Layout";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import Document from "./pages/Document";
+import Login from "./pages/Login";
+import UserContext from "../contexts/UserContext";
+import { firebase } from "../firebase";
+import ProtectedRoute from "./ProtectedRoute";
+import * as ReactGA from "react-ga";
 
 const App = () => {
   ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
@@ -16,7 +16,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
+    firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         setUser(user);
       } else {
@@ -32,17 +32,17 @@ const App = () => {
       <UserContext.Provider value={user}>
         <Layout loading={loading}>
           <Switch>
-            {
-              !loading &&
+            {!loading && (
               <>
-                <Route exact path="/login" component={Login}/>
-                <Route exact path="/" render={() => <Redirect to="/documents"/>}/>
-                <ProtectedRoute
-                  path="/documents"
-                  component={Document}
+                <Route exact path="/login" component={Login} />
+                <Route
+                  exact
+                  path="/"
+                  render={() => <Redirect to="/documents" />}
                 />
+                <ProtectedRoute path="/documents" component={Document} />
               </>
-            }
+            )}
           </Switch>
         </Layout>
       </UserContext.Provider>

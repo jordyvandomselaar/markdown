@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import AceEditor from 'react-ace';
-import styled from 'styled-components';
-import {ToolbarTitle} from 'rmwc/Toolbar';
-import 'brace/mode/markdown';
-import 'brace/theme/github';
-import PageTitle from '../PageTitle';
+import React, { useEffect, useState } from "react";
+import AceEditor from "react-ace";
+import styled from "styled-components";
+import { ToolbarTitle } from "rmwc/Toolbar";
+import "brace/mode/markdown";
+import "brace/theme/github";
+import PageTitle from "../PageTitle";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const Editor = ({match, findDocument, updateDocument}) => {
+const Editor = ({ match, findDocument, updateDocument }) => {
   const [document, setDocument] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -22,18 +22,21 @@ const Editor = ({match, findDocument, updateDocument}) => {
 
     const document = await findDocument(id);
 
-    setDocument(document.data() || '');
+    setDocument(document.data() || "");
 
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (loading) {
-      return;
-    }
+  useEffect(
+    () => {
+      if (loading) {
+        return;
+      }
 
-    updateDocument(match.params.id, {markdown: document.markdown});
-  }, [document]);
+      updateDocument(match.params.id, { markdown: document.markdown });
+    },
+    [document]
+  );
 
   return (
     <Wrapper>
@@ -44,13 +47,13 @@ const Editor = ({match, findDocument, updateDocument}) => {
       <AceEditor
         mode="markdown"
         theme="github"
-        onChange={markdown => setDocument({...document, markdown})}
+        onChange={markdown => setDocument({ ...document, markdown })}
         name="markdown-editor"
-        editorProps={{$blockScrolling: true}}
+        editorProps={{ $blockScrolling: true }}
         value={document.markdown}
         style={{
-          height: '100%',
-          width: '100%',
+          height: "100%",
+          width: "100%"
         }}
         fontSize={18}
       />

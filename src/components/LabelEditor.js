@@ -1,27 +1,36 @@
-import React, {useState} from 'react';
-import {Chip, ChipSet, ChipText} from 'rmwc/Chip';
-import {TextField} from 'rmwc/TextField';
+import React, { useState } from "react";
+import { Chip, ChipSet, ChipText } from "rmwc/Chip";
+import { TextField } from "rmwc/TextField";
 
-const LabelEditor = ({onChange, labels = []}) => {
-  const [value, setValue] = useState('');
+const LabelEditor = ({ onChange, labels = [] }) => {
+  const [value, setValue] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
 
     if (!value) return;
 
-    setValue('');
+    setValue("");
     onChange(value);
   };
 
   return (
     <div>
-      {onChange && <form onSubmit={handleSubmit}>
-        <TextField label="Labels" fullwidth value={value} onChange={e => setValue(e.target.value)}/>
-      </form>}
+      {onChange && (
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Labels"
+            fullwidth
+            value={value}
+            onChange={e => setValue(e.target.value)}
+          />
+        </form>
+      )}
       <ChipSet>
         {labels.map(label => (
-          <Chip key={label}><ChipText>{label}</ChipText></Chip>
+          <Chip key={label}>
+            <ChipText>{label}</ChipText>
+          </Chip>
         ))}
       </ChipSet>
     </div>

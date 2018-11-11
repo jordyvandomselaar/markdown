@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import '@rmwc/data-table/data-table.css';
-import styled from 'styled-components';
-import {Icon} from 'rmwc/Icon';
-import {Fab} from 'rmwc/Fab';
+import React, { useEffect, useState } from "react";
+import "@rmwc/data-table/data-table.css";
+import styled from "styled-components";
+import { Icon } from "rmwc/Icon";
+import { Fab } from "rmwc/Fab";
 import {
   DataTable,
   DataTableBody,
@@ -10,14 +10,14 @@ import {
   DataTableContent,
   DataTableHead,
   DataTableHeadCell,
-  DataTableRow,
-} from 'rmwc/DataTable';
-import {Link} from 'react-router-dom';
-import LabelEditor from '../LabelEditor';
-import Centered from '../styled/Centered';
-import PageTitle from '../PageTitle';
+  DataTableRow
+} from "rmwc/DataTable";
+import { Link } from "react-router-dom";
+import LabelEditor from "../LabelEditor";
+import Centered from "../styled/Centered";
+import PageTitle from "../PageTitle";
 
-import {ToolbarTitle} from 'rmwc/Toolbar';
+import { ToolbarTitle } from "rmwc/Toolbar";
 
 const StyledDataTable = styled(DataTable)`
   width: 100%;
@@ -31,7 +31,11 @@ const NewDocumentWrapper = styled.div`
   margin: 20px 0;
 `;
 
-const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirestoreDocument}) => {
+const DocumentOverview = ({
+  history,
+  fetchDocuments,
+  deleteDocument: deleteFirestoreDocument
+}) => {
   const [documents, setDocuments] = useState({});
 
   useEffect(async () => {
@@ -49,26 +53,29 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
   };
 
   const getDocuments = () => {
-    return (
-      Object.keys(documents).map(id => {
-        const document = documents[id];
+    return Object.keys(documents).map(id => {
+      const document = documents[id];
 
-        return (
-          <DataTableRow key={id}>
-            <DataTableCell><Link to={`/documents/${id}`}>{document.name}</Link></DataTableCell>
-            <DataTableCell><LabelEditor labels={document.labels}/></DataTableCell>
-            <DataTableCell>
-              <Icon
-                icon="delete" onClick={e => {
+      return (
+        <DataTableRow key={id}>
+          <DataTableCell>
+            <Link to={`/documents/${id}`}>{document.name}</Link>
+          </DataTableCell>
+          <DataTableCell>
+            <LabelEditor labels={document.labels} />
+          </DataTableCell>
+          <DataTableCell>
+            <Icon
+              icon="delete"
+              onClick={e => {
                 e.preventDefault();
                 deleteDocument(id);
               }}
-              />
-            </DataTableCell>
-          </DataTableRow>
-        );
-      })
-    );
+            />
+          </DataTableCell>
+        </DataTableRow>
+      );
+    });
   };
 
   return (
@@ -79,7 +86,11 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
       <div>
         <Centered>
           <NewDocumentWrapper>
-            <Fab icon="add" label="New Document" onClick={() => history.push('/documents/new')}/>
+            <Fab
+              icon="add"
+              label="New Document"
+              onClick={() => history.push("/documents/new")}
+            />
           </NewDocumentWrapper>
         </Centered>
         <StyledDataTable>
@@ -91,9 +102,7 @@ const DocumentOverview = ({history, fetchDocuments, deleteDocument: deleteFirest
                 <DataTableHeadCell>Actions</DataTableHeadCell>
               </DataTableRow>
             </DataTableHead>
-            <DataTableBody>
-              {getDocuments()}
-            </DataTableBody>
+            <DataTableBody>{getDocuments()}</DataTableBody>
           </StyledDataTableContent>
         </StyledDataTable>
       </div>

@@ -1,22 +1,20 @@
-import React, {useContext, useEffect} from 'react';
-import {initializeFirebaseAuthUi} from '../../firebase';
-import UserContext from '../../contexts/UserContext';
-import {Redirect} from 'react-router-dom';
+import React, { useContext, useEffect } from "react";
+import { initializeFirebaseAuthUi } from "../../firebase";
+import UserContext from "../../contexts/UserContext";
+import { Redirect } from "react-router-dom";
 
 const Login = () => {
   const user = useContext(UserContext);
 
   if (user) {
-    return <Redirect to="/"/>;
+    return <Redirect to="/" />;
   }
 
   useEffect(() => {
-    initializeFirebaseAuthUi('#ui');
+    initializeFirebaseAuthUi("#ui");
   });
 
-  return (
-    <div id="ui"/>
-  );
+  return <div id="ui" />;
 };
 
 export default Login;

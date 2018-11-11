@@ -1,7 +1,7 @@
-import {SET_PAGE_TITLE} from '../actions';
+import { SET_PAGE_TITLE } from "../actions";
 
 const initialState = {
-  pageTitle: '',
+  pageTitle: ""
 };
 
 const markdownApp = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const markdownApp = (state = initialState, action) => {
     case SET_PAGE_TITLE:
       return {
         ...state,
-        pageTitle: action.pageTitle,
+        pageTitle: action.pageTitle
       };
     default:
       return state;
