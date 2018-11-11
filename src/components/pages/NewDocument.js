@@ -7,12 +7,20 @@ import LabelEditor from "../LabelEditor";
 import PageTitle from "../PageTitle";
 import { ToolbarTitle } from "rmwc/Toolbar";
 
-const NewDocument = ({ history, storeDocument }) => {
+const NewDocument = ({ history, storeDocument: firebaseStoreDocument }) => {
   const [name, setName] = useState("");
   const [labels, setLabels] = useState([]);
   const updateLabels = labels => {
     // De-duplicate labels
     setLabels([...new Set(labels)]);
+  };
+
+  const storeDocument = (name, labels) => {
+    if (!name) {
+      return;
+    }
+
+    firebaseStoreDocument(name, labels);
   };
 
   return (
