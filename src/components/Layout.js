@@ -56,7 +56,7 @@ const Layout = ({ children, loading }) => {
 
   useEffect(() => {
     setStateTitleBarRef(titleBarRef);
-  });
+  }, []);
 
   return (
     <Wrapper>
@@ -88,7 +88,7 @@ const Layout = ({ children, loading }) => {
             </DrawerContent>
           </Drawer>
           <DrawerAppContent style={{ minHeight: "15rem", height: "100%" }}>
-            <TitleBar containerRef={titleBarRef} />
+            <TitleBar containerRef={stateTitleBarRef} />
             <TitleBarContext.Provider value={stateTitleBarRef}>
               <Content>{children}</Content>
             </TitleBarContext.Provider>
