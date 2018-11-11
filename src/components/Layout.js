@@ -52,11 +52,14 @@ const StyledLink = styled(Link)`
 const Layout = ({ children, loading }) => {
   const user = useContext(UserContext);
   const [stateTitleBarRef, setStateTitleBarRef] = useState(null);
+  const [titleBarRefHasCurrent, setTitleBarRefHasCurrent] = useState(false);
+
   const titleBarRef = React.createRef();
 
   useEffect(() => {
-    setStateTitleBarRef(titleBarRef);
-  }, []);
+    if (stateTitleBarRef) return;
+    setStateTitleBarRef(titleBarRef.current);
+  });
 
   return (
     <Wrapper>
@@ -88,7 +91,7 @@ const Layout = ({ children, loading }) => {
             </DrawerContent>
           </Drawer>
           <DrawerAppContent style={{ minHeight: "15rem", height: "100%" }}>
-            <TitleBar containerRef={stateTitleBarRef} />
+            <TitleBar containerRef={titleBarRef} />
             <TitleBarContext.Provider value={stateTitleBarRef}>
               <Content>{children}</Content>
             </TitleBarContext.Provider>

@@ -5,11 +5,11 @@ import TitleBarContext from "../contexts/TitleBarContext";
 const PageTitle = ({ title, children }) => {
   const titleBarRef = useContext(TitleBarContext);
 
-  if (!titleBarRef.current) {
+  if (!titleBarRef) {
     return null;
   }
 
-  return createPortal(<>{children}</>, titleBarRef.current);
+  return createPortal(<>{children}</>, titleBarRef);
 };
 
 export default PageTitle;
