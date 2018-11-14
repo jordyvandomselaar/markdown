@@ -34,4 +34,20 @@ const initializeFirebaseAuthUi = selector => {
   ui.start(selector, uiConfig);
 };
 
+firestore
+  .enablePersistence({
+    experimentalTabSynchronization: true
+  })
+  .catch(err => {
+    if (err.code === "failed-precondition") {
+      alert(
+        "This app only supports one tab at the time. If you use multiple tabs offline data persistence is not enabled."
+      );
+    } else if (err.code === "unimplemented") {
+      alert(
+        "Offline data persistence disabled. Your browser doesn't support it =("
+      );
+    }
+  });
+
 export { firebase, firestore, firebaseui, ui, initializeFirebaseAuthUi };
