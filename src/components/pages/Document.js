@@ -6,6 +6,8 @@ import { firestore } from "../../firebase";
 import DocumentOverview from "./DocmentOverview";
 import UserContext from "../../contexts/UserContext";
 
+let saveTimeout;
+
 const Document = ({ match, history }) => {
   const user = useContext(UserContext);
 
@@ -59,9 +61,13 @@ const Document = ({ match, history }) => {
   };
 
   const updateDocument = (id, data) => {
-    const document = getDocumentCollection().doc(id);
+    clearTimeout(saveTimeout);
 
-    return document.update(data);
+    saveTimeout = setTimeout(() => {
+      const document = getDocumentCollection().doc(id);
+
+      return document.update(data);
+    }, 200);
   };
 
   const deleteDocument = id => {

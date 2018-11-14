@@ -39,7 +39,7 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.main`
-  height: 100%;
+  height: calc(100% - 64px);
   position: relative;
 
   flex: 1;

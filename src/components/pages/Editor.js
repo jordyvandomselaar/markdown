@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import AceEditor from "react-ace";
 import styled from "styled-components";
 import { ToolbarTitle } from "rmwc/Toolbar";
-import "brace/mode/markdown";
-import "brace/theme/github";
 import PageTitle from "../PageTitle";
 import LabelEditor from "../LabelEditor";
 import FlexHorizontal from "../styled/FlexHorizontal";
+import MarkdownEditor from "../MarkdownEditor";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -49,19 +47,14 @@ const Editor = ({ match, findDocument, updateDocument }) => {
         </FlexHorizontal>
       </PageTitle>
 
-      <AceEditor
-        mode="markdown"
-        theme="github"
-        onChange={markdown => setDocument({ ...document, markdown })}
-        name="markdown-editor"
-        editorProps={{ $blockScrolling: true }}
-        value={document.markdown}
-        style={{
-          height: "100%",
-          width: "100%"
-        }}
-        fontSize={18}
-      />
+      {!loading && (
+        <MarkdownEditor
+          onMarkdownChange={markdown => setDocument({ ...document, markdown })}
+          name="markdown-editor"
+          editorProps={{ $blockScrolling: true }}
+          initialMarkdown={document.markdown}
+        />
+      )}
     </Wrapper>
   );
 };
