@@ -29,6 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn build && firebase deploy",
+    "deploy:production": "firebase use default && yarn build && firebase deploy",
     "firestore": "firebase deploy --only=firestore",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
