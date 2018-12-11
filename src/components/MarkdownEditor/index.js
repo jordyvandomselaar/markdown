@@ -17,6 +17,7 @@ const MarkdownEditor = ({ onMarkdownChange, initialMarkdown }) => {
       height: "100%",
       usageStatistics: false,
       initialValue: initialMarkdown,
+      useDefaultHTMLSanitizer: false,
       events: {
         change: () => onMarkdownChange(editorInstance.getValue())
       }
