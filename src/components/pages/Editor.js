@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { ToolbarTitle } from "rmwc/Toolbar";
-import PageTitle from "../PageTitle";
-import LabelEditor from "../LabelEditor";
-import FlexHorizontal from "../styled/FlexHorizontal";
-import MarkdownEditor from "../MarkdownEditor";
+import React, {useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {ToolbarTitle} from 'rmwc/Toolbar';
+import PageTitle from '../PageTitle';
+import LabelEditor from '../LabelEditor';
+import FlexHorizontal from '../styled/FlexHorizontal';
+import MarkdownEditor from '../MarkdownEditor';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -17,14 +17,13 @@ const Editor = ({ match, findDocument, updateDocument }) => {
   const [document, setDocument] = useState({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(async () => {
+  useEffect(() => {
     const id = match.params.id;
 
-    const document = await findDocument(id);
-
-    setDocument(document.data() || "");
-
-    setLoading(false);
+    findDocument(id).then(document => {
+      setDocument(document.data() || "");
+      setLoading(false);
+    });
   }, []);
 
   useEffect(

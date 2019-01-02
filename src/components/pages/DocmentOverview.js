@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import "@rmwc/data-table/data-table.css";
-import styled from "styled-components";
-import { IconButton } from "rmwc/IconButton";
-import { Fab } from "rmwc/Fab";
+import React from 'react';
+import '@rmwc/data-table/data-table.css';
+import styled from 'styled-components';
+import {IconButton} from 'rmwc/IconButton';
+import {Fab} from 'rmwc/Fab';
 import {
   DataTable,
   DataTableBody,
@@ -10,14 +10,15 @@ import {
   DataTableContent,
   DataTableHead,
   DataTableHeadCell,
-  DataTableRow
-} from "rmwc/DataTable";
-import { Link } from "react-router-dom";
-import LabelEditor from "../LabelEditor";
-import Centered from "../styled/Centered";
-import PageTitle from "../PageTitle";
-import { Grid, GridCell } from "rmwc/Grid";
-import { ToolbarTitle } from "rmwc/Toolbar";
+  DataTableRow,
+} from 'rmwc/DataTable';
+import {Link} from 'react-router-dom';
+import LabelEditor from '../LabelEditor';
+import PageTitle from '../PageTitle';
+import {Grid, GridCell} from 'rmwc/Grid';
+import {ToolbarTitle} from 'rmwc/Toolbar';
+import {Typography} from 'rmwc/Typography';
+import {TextField} from 'rmwc/TextField';
 
 const StyledDataTable = styled(DataTable)`
   width: 100%;
@@ -27,27 +28,11 @@ const StyledDataTableContent = styled(DataTableContent)`
   width: 100%;
 `;
 
-const DocumentOverview = ({
-  history,
-  fetchDocuments,
-  deleteDocument: deleteFirestoreDocument
-}) => {
-  const [documents, setDocuments] = useState({});
+const OpenDocumentButton = styled(Link)`
+  text-decoration: none;
+`;
 
-  useEffect(async () => {
-    const documents = await fetchDocuments();
-
-    setDocuments(documents);
-  }, []);
-
-  const deleteDocument = id => {
-    deleteFirestoreDocument(id);
-
-    const newDocuments = documents;
-    delete newDocuments[id];
-    setDocuments(newDocuments);
-  };
-
+const DocumentOverview = ({ history, documents, deleteDocument, search }) => {
   const getDocuments = () => {
     return Object.keys(documents).map(id => {
       const document = documents[id];
@@ -55,7 +40,9 @@ const DocumentOverview = ({
       return (
         <DataTableRow key={id}>
           <DataTableCell>
-            <Link to={`/documents/${id}`}>{document.name}</Link>
+            <OpenDocumentButton to={`/documents/${id}`}>
+              <Typography use="body1">{document.name}</Typography>
+            </OpenDocumentButton>
           </DataTableCell>
           <DataTableCell>
             <LabelEditor labels={document.labels} />
@@ -81,20 +68,33 @@ const DocumentOverview = ({
       </PageTitle>
       <Grid>
         <GridCell span={12}>
-          <Centered>
-            <Fab
-              icon="add"
-              label="New Document"
-              onClick={() => history.push("/documents/new")}
-            />
-          </Centered>
+          <Fab
+            icon="add"
+            label="New Document"
+            onClick={() => history.push("/documents/new")}
+          />
+          <TextField
+            withLeadingIcon="search"
+            withTrailingIcon="close"
+            label="Search"
+            outlined={true}
+            onChange={e => search(e.target.value)}
+          />
+        </GridCell>
+        <GridCell span={12}>
           <StyledDataTable>
             <StyledDataTableContent>
               <DataTableHead>
                 <DataTableRow>
-                  <DataTableHeadCell>Document</DataTableHeadCell>
-                  <DataTableHeadCell>Labels</DataTableHeadCell>
-                  <DataTableHeadCell>Actions</DataTableHeadCell>
+                  <DataTableHeadCell>
+                    <Typography use="body1">Document</Typography>
+                  </DataTableHeadCell>
+                  <DataTableHeadCell>
+                    <Typography use="body1">Labels</Typography>
+                  </DataTableHeadCell>
+                  <DataTableHeadCell>
+                    <Typography use="body1">Actions</Typography>
+                  </DataTableHeadCell>
                 </DataTableRow>
               </DataTableHead>
               <DataTableBody>{getDocuments()}</DataTableBody>

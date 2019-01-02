@@ -1,15 +1,32 @@
-import React, { useContext } from "react";
-import Editor from "./Editor";
-import { Route, Switch } from "react-router-dom";
-import NewDocument from "./NewDocument";
-import { firestore } from "../../firebase";
-import DocumentOverview from "./DocmentOverview";
-import UserContext from "../../contexts/UserContext";
+import React, {useContext, useEffect, useState} from 'react';
+import Editor from './Editor';
+import {Route, Switch} from 'react-router-dom';
+import NewDocument from './NewDocument';
+import {firestore} from '../../firebase';
+import DocumentOverview from './DocmentOverview';
+import UserContext from '../../contexts/UserContext';
 
 let saveTimeout;
 
 const Document = ({ match, history }) => {
   const user = useContext(UserContext);
+  const [documents, setDocuments] = useState({});
+  const [shownDocuments, setShownDocuments] = useState({});
+
+  const allDocuments = async () => {
+    const documents = await getDocumentCollection()
+      .where("user", "==", user.uid)
+      .get();
+
+    return transformDocuments(documents);
+  };
+
+  useEffect(() => {
+    allDocuments().then(documents => {
+      setDocuments(documents);
+      setShownDocuments(documents);
+    });
+  }, []);
 
   const getDocumentCollection = () => {
     return firestore.collection("documents");
@@ -70,24 +87,57 @@ const Document = ({ match, history }) => {
     }, 200);
   };
 
-  const deleteDocument = id => {
-    getDocumentCollection()
+  const deleteDocument = async id => {
+    await getDocumentCollection()
       .doc(id)
       .delete();
+
+    const clone = { ...documents };
+    delete clone[id];
+
+    setDocuments(clone);
   };
 
-  const allDocuments = async () => {
-    const documents = await getDocumentCollection()
-      .where("user", "==", user.uid)
-      .get();
-
-    return documents.docs.reduce(
+  const transformDocuments = documents =>
+    documents.docs.reduce(
       (carrier, document) => ({
         ...carrier,
         [document.id]: document.data()
       }),
       {}
     );
+
+  const search = async query => {
+    if (!query) {
+      setShownDocuments(documents);
+    }
+
+    const newDocuments = Object.keys(documents).reduce((result, id) => {
+      const document = documents[id];
+      const lowerCaseQuery = query.toLowerCase();
+
+      if (document.markdown.toLowerCase().indexOf(lowerCaseQuery) > -1) {
+        result[id] = document;
+      }
+
+      if (document.name.toLowerCase().indexOf(lowerCaseQuery) > -1) {
+        result[id] = document;
+      }
+
+      const { labels } = document;
+
+      const labelMatches = labels.filter(
+        label => label.toLowerCase().indexOf(lowerCaseQuery) > -1
+      );
+
+      if (labelMatches.length) {
+        result[id] = document;
+      }
+
+      return result;
+    }, {});
+
+    setShownDocuments(newDocuments);
   };
 
   return (
@@ -98,8 +148,9 @@ const Document = ({ match, history }) => {
         render={props => (
           <DocumentOverview
             {...props}
-            fetchDocuments={allDocuments}
+            documents={shownDocuments}
             deleteDocument={deleteDocument}
+            search={search}
           />
         )}
       />
