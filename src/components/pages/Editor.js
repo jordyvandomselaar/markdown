@@ -1,16 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import { ToolbarTitle } from "@rmwc/toolbar";
-import PageTitle from "../PageTitle";
-import LabelEditor from "../LabelEditor";
-import FlexHorizontal from "../styled/FlexHorizontal";
-import MarkdownEditor from "../MarkdownEditor";
-import { Typography } from "@rmwc/typography";
-import { TextField } from "@rmwc/textfield";
-import "@material/textfield/dist/mdc.textfield.css";
-import "@material/floating-label/dist/mdc.floating-label.css";
-import "@material/notched-outline/dist/mdc.notched-outline.css";
-import "@material/line-ripple/dist/mdc.line-ripple.css";
+import React from 'react';
+import styled from 'styled-components';
+import {ToolbarTitle} from '@rmwc/toolbar';
+import PageTitle from '../PageTitle';
+import LabelEditor from '../LabelEditor';
+import FlexHorizontal from '../styled/FlexHorizontal';
+import MarkdownEditor from '../MarkdownEditor';
+import {Typography} from '@rmwc/typography';
+import {TextField} from '@rmwc/textfield';
+import '@material/textfield/dist/mdc.textfield.css';
+import '@material/floating-label/dist/mdc.floating-label.css';
+import '@material/notched-outline/dist/mdc.notched-outline.css';
+import '@material/line-ripple/dist/mdc.line-ripple.css';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -21,6 +21,10 @@ const Wrapper = styled.div`
 
 const Item = styled.td`
   text-align: right;
+`;
+
+const FlexItem = styled.div`
+  flex: 1;
 `;
 
 const Editor = ({ match, document, updateDocument }) => {
@@ -59,12 +63,16 @@ const Editor = ({ match, document, updateDocument }) => {
         </tbody>
       </table>
 
-      <MarkdownEditor
-        onMarkdownChange={markdown => updateDocument({ ...document, markdown })}
-        name="markdown-editor"
-        editorProps={{ $blockScrolling: true }}
-        initialMarkdown={document.markdown}
-      />
+      <FlexItem>
+        <MarkdownEditor
+          onMarkdownChange={markdown =>
+            updateDocument({ ...document, markdown })
+          }
+          name="markdown-editor"
+          editorProps={{ $blockScrolling: true }}
+          initialMarkdown={document.markdown}
+        />
+      </FlexItem>
     </Wrapper>
   );
 };
