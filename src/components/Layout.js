@@ -10,9 +10,9 @@ import {
   DrawerHeader,
   DrawerSubtitle,
   DrawerTitle
-} from "rmwc/Drawer";
+} from "@rmwc/drawer";
 
-import { List, ListItem } from "rmwc/List";
+import { List, ListItem } from "@rmwc/list";
 import { Link } from "react-router-dom";
 import { firebase } from "../firebase";
 import UserContext from "../contexts/UserContext";

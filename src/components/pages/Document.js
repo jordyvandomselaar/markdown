@@ -1,16 +1,17 @@
-import React, {useContext, useEffect, useState} from 'react';
-import Editor from './Editor';
-import {Route, Switch} from 'react-router-dom';
-import NewDocument from './NewDocument';
-import {firestore} from '../../firebase';
-import DocumentOverview from './DocmentOverview';
-import UserContext from '../../contexts/UserContext';
+import React, { useContext, useEffect, useState } from "react";
+import Editor from "./Editor";
+import { Route, Switch } from "react-router-dom";
+import NewDocument from "./NewDocument";
+import { firestore } from "../../firebase";
+import DocumentOverview from "./DocumentOverview";
+import UserContext from "../../contexts/UserContext";
 
 let saveTimeout;
 
 const Document = ({ match, history }) => {
   const user = useContext(UserContext);
   const [documents, setDocuments] = useState({});
+  const [loading, setLoading] = useState(true);
   const [shownDocuments, setShownDocuments] = useState({});
 
   const allDocuments = async () => {
@@ -25,6 +26,7 @@ const Document = ({ match, history }) => {
     allDocuments().then(documents => {
       setDocuments(documents);
       setShownDocuments(documents);
+      setLoading(false);
     });
   }, []);
 
@@ -34,6 +36,26 @@ const Document = ({ match, history }) => {
 
   const getLabelsCollection = () => {
     return firestore.collection("labels");
+  };
+
+  const updateFirestoreDocument = documentToSave => {
+    clearTimeout(saveTimeout);
+
+    saveTimeout = setTimeout(() => {
+      const document = getDocumentCollection().doc(documentToSave.id);
+
+      const data = { ...documentToSave };
+      delete data.id;
+
+      return document.update(data);
+    }, 200);
+  };
+
+  const updateDocument = document => {
+    setDocuments({ ...documents, [document.id]: document });
+    setShownDocuments({ ...documents, [document.id]: document });
+
+    updateFirestoreDocument(document);
   };
 
   const storeDocument = async (name, labels = []) => {
@@ -62,29 +84,19 @@ const Document = ({ match, history }) => {
       labels: labels
     });
 
+    const newDocumentForState = {
+      id: newDocument.id,
+      name,
+      markdown: "",
+      labels
+    };
+
+    setDocuments({
+      ...documents,
+      [newDocumentForState.id]: newDocumentForState
+    });
+
     return history.push(`/documents/${newDocument.id}`);
-  };
-
-  const findDocument = async id => {
-    const document = await getDocumentCollection()
-      .doc(id)
-      .get();
-
-    if (document.exists) {
-      return document;
-    }
-
-    return {};
-  };
-
-  const updateDocument = (id, data) => {
-    clearTimeout(saveTimeout);
-
-    saveTimeout = setTimeout(() => {
-      const document = getDocumentCollection().doc(id);
-
-      return document.update(data);
-    }, 200);
   };
 
   const deleteDocument = async id => {
@@ -96,13 +108,17 @@ const Document = ({ match, history }) => {
     delete clone[id];
 
     setDocuments(clone);
+    setShownDocuments(clone);
   };
 
   const transformDocuments = documents =>
     documents.docs.reduce(
       (carrier, document) => ({
         ...carrier,
-        [document.id]: document.data()
+        [document.id]: {
+          ...document.data(),
+          id: document.id
+        }
       }),
       {}
     );
@@ -140,6 +156,10 @@ const Document = ({ match, history }) => {
     setShownDocuments(newDocuments);
   };
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <Switch>
       <Route
@@ -163,10 +183,11 @@ const Document = ({ match, history }) => {
       />
       <Route
         path={`${match.url}/:id`}
-        render={props => (
+        render={({ match, ...props }) => (
           <Editor
             {...props}
-            findDocument={findDocument}
+            match={match}
+            document={documents[match.params.id]}
             updateDocument={updateDocument}
           />
         )}

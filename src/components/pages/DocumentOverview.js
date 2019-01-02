@@ -1,8 +1,7 @@
-import React from 'react';
-import '@rmwc/data-table/data-table.css';
-import styled from 'styled-components';
-import {IconButton} from 'rmwc/IconButton';
-import {Fab} from 'rmwc/Fab';
+import React from "react";
+import styled from "styled-components";
+import { IconButton } from "@rmwc/icon-button";
+import { Fab } from "@rmwc/fab";
 import {
   DataTable,
   DataTableBody,
@@ -10,15 +9,20 @@ import {
   DataTableContent,
   DataTableHead,
   DataTableHeadCell,
-  DataTableRow,
-} from 'rmwc/DataTable';
-import {Link} from 'react-router-dom';
-import LabelEditor from '../LabelEditor';
-import PageTitle from '../PageTitle';
-import {Grid, GridCell} from 'rmwc/Grid';
-import {ToolbarTitle} from 'rmwc/Toolbar';
-import {Typography} from 'rmwc/Typography';
-import {TextField} from 'rmwc/TextField';
+  DataTableRow
+} from "@rmwc/data-table";
+import { Link } from "react-router-dom";
+import LabelEditor from "../LabelEditor";
+import PageTitle from "../PageTitle";
+import { Grid, GridCell } from "@rmwc/grid";
+import { ToolbarTitle } from "@rmwc/toolbar";
+import { Typography } from "@rmwc/typography";
+import { TextField } from "@rmwc/textfield";
+import "@material/textfield/dist/mdc.textfield.css";
+import "@material/floating-label/dist/mdc.floating-label.css";
+import "@material/notched-outline/dist/mdc.notched-outline.css";
+import "@material/line-ripple/dist/mdc.line-ripple.css";
+import "@rmwc/data-table/data-table.css";
 
 const StyledDataTable = styled(DataTable)`
   width: 100%;

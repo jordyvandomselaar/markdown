@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import { Elevation } from "rmwc/Elevation";
-import { TextField } from "rmwc/TextField";
-import { Button } from "rmwc/Button";
+import { Elevation } from "@rmwc/elevation";
+import { TextField } from "@rmwc/textfield";
+import { Button } from "@rmwc/button";
 import LabelEditor from "../LabelEditor";
 import PageTitle from "../PageTitle";
-import { ToolbarTitle } from "rmwc/Toolbar";
+import { ToolbarTitle } from "@rmwc/toolbar";
 import uniq from "lodash/uniq";
-import { Grid, GridCell } from "rmwc/Grid";
+import { Grid, GridCell } from "@rmwc/grid";
 
 const NewDocument = ({ history, storeDocument: firebaseStoreDocument }) => {
   const [name, setName] = useState("");

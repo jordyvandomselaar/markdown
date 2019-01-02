@@ -3,7 +3,7 @@ import { initializeFirebaseAuthUi } from "../../firebase";
 import UserContext from "../../contexts/UserContext";
 import { Redirect } from "react-router-dom";
 import PageTitle from "../PageTitle";
-import { ToolbarTitle } from "rmwc/Toolbar";
+import { ToolbarTitle } from "@rmwc/toolbar";
 
 const Login = () => {
   const user = useContext(UserContext);

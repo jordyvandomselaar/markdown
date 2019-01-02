@@ -1,5 +1,5 @@
 import React from "react";
-import { Toolbar, ToolbarRow } from "rmwc/Toolbar";
+import { Toolbar, ToolbarRow } from "@rmwc/toolbar";
 
 const TitleBar = ({ children, containerRef }) => {
   return (

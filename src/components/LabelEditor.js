@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Chip, ChipSet, ChipText } from "rmwc/Chip";
-import { TextField } from "rmwc/TextField";
+import { Chip, ChipSet, ChipText } from "@rmwc/chip";
+import { TextField } from "@rmwc/textfield";
 
 const LabelEditor = ({ onChange, labels = [] }) => {
   const [value, setValue] = useState("");
