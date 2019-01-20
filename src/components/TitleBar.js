@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
-import {Toolbar, ToolbarRow} from '@rmwc/toolbar';
-import {IconButton} from '@rmwc/icon-button';
-import '@material/icon-button/dist/mdc.icon-button.css';
-import DrawerContext from '../contexts/DrawerContext';
+import React, { useContext } from "react";
+import { Toolbar, ToolbarRow } from "@rmwc/toolbar";
+import { IconButton } from "@rmwc/icon-button";
+import "@material/icon-button/dist/mdc.icon-button.css";
+import DrawerContext from "../contexts/DrawerContext";
 
 const TitleBar = ({ children, containerRef }) => {
   const { drawer, setDrawer } = useContext(DrawerContext);
