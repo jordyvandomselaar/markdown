@@ -23,9 +23,13 @@ import "@material/floating-label/dist/mdc.floating-label.css";
 import "@material/notched-outline/dist/mdc.notched-outline.css";
 import "@material/line-ripple/dist/mdc.line-ripple.css";
 import "@rmwc/data-table/data-table.css";
+import Centered from "../styled/Centered";
+import "@material/elevation/dist/mdc.elevation.css";
+import { Elevation } from "@rmwc/elevation";
 
 const StyledDataTable = styled(DataTable)`
   width: 100%;
+  border: none !important;
 `;
 
 const StyledDataTableContent = styled(DataTableContent)`
@@ -36,7 +40,13 @@ const OpenDocumentButton = styled(Link)`
   text-decoration: none;
 `;
 
-const DocumentOverview = ({ history, documents, deleteDocument, search }) => {
+const DocumentOverview = ({
+  history,
+  documents,
+  deleteDocument,
+  search,
+  shareDocument
+}) => {
   const getDocuments = () => {
     return Object.keys(documents).map(id => {
       const document = documents[id];
@@ -49,14 +59,18 @@ const DocumentOverview = ({ history, documents, deleteDocument, search }) => {
             </OpenDocumentButton>
           </DataTableCell>
           <DataTableCell>
-            <LabelEditor labels={document.labels} />
-          </DataTableCell>
-          <DataTableCell>
             <IconButton
               icon="delete"
               onClick={e => {
                 e.preventDefault();
                 deleteDocument(id);
+              }}
+            />
+            <IconButton
+              icon="share"
+              onClick={e => {
+                e.preventDefault();
+                shareDocument(id);
               }}
             />
           </DataTableCell>
@@ -71,39 +85,34 @@ const DocumentOverview = ({ history, documents, deleteDocument, search }) => {
         <ToolbarTitle>Document Overview</ToolbarTitle>
       </PageTitle>
       <Grid>
-        <GridCell span={12}>
-          <Fab
-            icon="add"
-            label="New Document"
-            onClick={() => history.push("/documents/new")}
-          />
+        <GridCell span={11}>
           <TextField
-            withLeadingIcon="search"
-            withTrailingIcon="close"
             label="Search"
-            outlined={true}
             onChange={e => search(e.target.value)}
+            fullwidth
           />
         </GridCell>
+        <GridCell span={1}>
+          <Fab icon="add" onClick={() => history.push("/documents/new")} />
+        </GridCell>
         <GridCell span={12}>
-          <StyledDataTable>
-            <StyledDataTableContent>
-              <DataTableHead>
-                <DataTableRow>
-                  <DataTableHeadCell>
-                    <Typography use="body1">Document</Typography>
-                  </DataTableHeadCell>
-                  <DataTableHeadCell>
-                    <Typography use="body1">Labels</Typography>
-                  </DataTableHeadCell>
-                  <DataTableHeadCell>
-                    <Typography use="body1">Actions</Typography>
-                  </DataTableHeadCell>
-                </DataTableRow>
-              </DataTableHead>
-              <DataTableBody>{getDocuments()}</DataTableBody>
-            </StyledDataTableContent>
-          </StyledDataTable>
+          <Elevation z={1}>
+            <StyledDataTable>
+              <StyledDataTableContent>
+                <DataTableHead>
+                  <DataTableRow>
+                    <DataTableHeadCell>
+                      <Typography use="body1">Document</Typography>
+                    </DataTableHeadCell>
+                    <DataTableHeadCell>
+                      <Typography use="body1">Actions</Typography>
+                    </DataTableHeadCell>
+                  </DataTableRow>
+                </DataTableHead>
+                <DataTableBody>{getDocuments()}</DataTableBody>
+              </StyledDataTableContent>
+            </StyledDataTable>
+          </Elevation>
         </GridCell>
       </Grid>
     </>

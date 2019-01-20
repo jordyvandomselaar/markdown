@@ -38,10 +38,6 @@ const NewDocument = ({ history, storeDocument: firebaseStoreDocument }) => {
               value={name}
               onChange={e => setName(e.target.value)}
             />
-            <LabelEditor
-              labels={labels}
-              onChange={label => updateLabels([...labels, label])}
-            />
             <Button raised onClick={() => storeDocument(name, labels)}>
               Save
             </Button>

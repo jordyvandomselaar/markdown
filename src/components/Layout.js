@@ -1,17 +1,24 @@
-import styled from "styled-components"
-import React, {useContext, useEffect, useState} from "react"
-import "material-components-web/dist/material-components-web.min.css"
-import "material-icons"
+import styled from "styled-components";
+import React, { useContext, useEffect, useState } from "react";
+import "material-components-web/dist/material-components-web.min.css";
+import "material-icons";
 
-import {Drawer, DrawerAppContent, DrawerContent, DrawerHeader, DrawerSubtitle, DrawerTitle} from "@rmwc/drawer"
+import {
+  Drawer,
+  DrawerAppContent,
+  DrawerContent,
+  DrawerHeader,
+  DrawerSubtitle,
+  DrawerTitle
+} from "@rmwc/drawer";
 
-import {List, ListItem} from "@rmwc/list"
-import {Link} from "react-router-dom"
-import {firebase} from "../firebase"
-import UserContext from "../contexts/UserContext"
-import TitleBar from "./TitleBar"
-import TitleBarContext from "../contexts/TitleBarContext"
-import DrawerContext from "../contexts/DrawerContext"
+import { List, ListItem } from "@rmwc/list";
+import { Link } from "react-router-dom";
+import { firebase } from "../firebase";
+import UserContext from "../contexts/UserContext";
+import TitleBar from "./TitleBar";
+import TitleBarContext from "../contexts/TitleBarContext";
+import DrawerContext from "../contexts/DrawerContext";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -19,6 +26,7 @@ const Wrapper = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
+  background: #f6f6f6;
 
   * {
     box-sizing: border-box;

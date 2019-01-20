@@ -14,20 +14,22 @@ const Document = ({ match, history }) => {
   const [loading, setLoading] = useState(true);
   const [shownDocuments, setShownDocuments] = useState({});
 
-  const allDocuments = async () => {
-    const documents = await getDocumentCollection()
+  const subscribeToDocuments = async () => {
+    await getDocumentCollection()
       .where("user", "==", user.uid)
-      .get();
+      .onSnapshot(snapshot => {
+        const transformedDocuments = transformDocuments(snapshot);
 
-    return transformDocuments(documents);
+        setDocuments(transformedDocuments);
+        setShownDocuments(transformedDocuments);
+        setLoading(false);
+      });
+
+    return {};
   };
 
   useEffect(() => {
-    allDocuments().then(documents => {
-      setDocuments(documents);
-      setShownDocuments(documents);
-      setLoading(false);
-    });
+    subscribeToDocuments();
   }, []);
 
   const getDocumentCollection = () => {
@@ -38,24 +40,24 @@ const Document = ({ match, history }) => {
     return firestore.collection("labels");
   };
 
-  const updateFirestoreDocument = documentToSave => {
+  const updateDocument = documentToSave => {
     clearTimeout(saveTimeout);
+
+    documents[documentToSave.id] = {
+      ...documents[documentToSave.id],
+      ...documentToSave
+    };
+
+    setDocuments(documents);
+    setShownDocuments(documents);
 
     saveTimeout = setTimeout(() => {
       const document = getDocumentCollection().doc(documentToSave.id);
 
-      const data = { ...documentToSave };
-      delete data.id;
+      delete documentToSave.id;
 
-      return document.update(data);
+      return document.update(documentToSave);
     }, 200);
-  };
-
-  const updateDocument = document => {
-    setDocuments({ ...documents, [document.id]: document });
-    setShownDocuments({ ...documents, [document.id]: document });
-
-    updateFirestoreDocument(document);
   };
 
   const storeDocument = async (name, labels = []) => {
@@ -81,19 +83,8 @@ const Document = ({ match, history }) => {
       name,
       user: user.uid,
       timestamp: Date.now(),
-      labels: labels
-    });
-
-    const newDocumentForState = {
-      id: newDocument.id,
-      name,
-      markdown: "",
-      labels
-    };
-
-    setDocuments({
-      ...documents,
-      [newDocumentForState.id]: newDocumentForState
+      labels: labels,
+      shared: false
     });
 
     return history.push(`/documents/${newDocument.id}`);
@@ -103,12 +94,17 @@ const Document = ({ match, history }) => {
     await getDocumentCollection()
       .doc(id)
       .delete();
+  };
 
-    const clone = { ...documents };
-    delete clone[id];
+  const shareDocument = async id => {
+    const documentRef = getDocumentCollection().doc(id);
+    const document = await documentRef.get();
 
-    setDocuments(clone);
-    setShownDocuments(clone);
+    await documentRef.update({ shared: !document.data().shared });
+
+    documents[id].shared = true;
+
+    setDocuments(documents);
   };
 
   const transformDocuments = documents =>
@@ -170,6 +166,7 @@ const Document = ({ match, history }) => {
             {...props}
             documents={shownDocuments}
             deleteDocument={deleteDocument}
+            shareDocument={shareDocument}
             search={search}
           />
         )}
